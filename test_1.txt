@@ -1,0 +1,88 @@
+TEST-1
+TEST-BEGIN
+TEXT:
+Hello, Kamen!
+I am your AI_assistant and I am here to help.
+Please ask me all your questions!
+COMMAND:
+preprocess data.txt "-DAI_assistant=?"
+TEST-END
+
+TEST-2
+TEST-BEGIN
+TEXT:
+Hello, Kamen!
+I am your AI35 assistant and I am here to help.
+Please ask me all your questions!
+COMMAND:
+preprocess data.txt -DAI35=101
+TEST-END
+
+TEST-3
+TEST-BEGIN
+TEXT:
+Hello, Kamen!
+My name is Alice. I am your AI assistant, alice, and I am here to help.
+Please ask me all your questions!
+COMMAND:
+preprocess data.txt -DAlice=Rose
+TEST-END
+
+TEST-4
+TEST-BEGIN
+TEXT:
+Read the paper The Design Philosophy of the DARPA Internet Protocol
+COMMAND:
+preprocess data.txt "-DRead=Do not read" "-Dthe=this" "-Dpaper=paper:" "-DInternet=Inter" 
+TEST-END
+
+TEST-5
+TEST-BEGIN
+TEXT:
+Read the end_to_end arguments paper and explain the rationale for moving function
+upward in a layered system.
+COMMAND:
+preprocess data.txt "-Dend_to_end=E-to-E" "-Da=the"
+TEST-END
+
+TEST-6
+TEST-BEGIN
+TEXT:
+Peterson_and_Davie, Chapter 1, question 3
+COMMAND:
+preprocess data.txt "-DPeterson_and_Davie=P & D"
+TEST-END
+
+TEST-7
+TEST-BEGIN
+TEXT:
+Note: We assume that just one byte is corrupted for every 1 million bytes
+COMMAND:
+preprocess data.txt "-DNote= FYI" "-DWe=We will"
+TEST-END
+
+TEST-8
+TEST-BEGIN
+TEXT:
+Note: in (b) there will be changes.
+COMMAND:
+preprocess data.txt -Db=a
+TEST-END
+
+TEST-9
+TEST-BEGIN
+TEXT:
+The application as of right now has a couple of important features that are included in the fields of 
+the Decedent Information, Pills on Scene, Incident Information, Last Seen Alive and Death Discovered. 
+COMMAND:
+preprocess data.txt -Dcouple=multiple "-Dand=&"
+TEST-END
+
+TEST-10
+TEST-BEGIN
+TEXT:
+#define NAME Jure
+Hello, NAME!
+COMMAND:
+preprocess data.txt -DHello=Morning
+TEST-END

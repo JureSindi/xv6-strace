@@ -1,0 +1,45 @@
+TEST-1
+TEST-BEGIN  
+COMMAND: ( cat hello.txt ; cat hello.txt | tr '[:lower:]' '[:upper:]' ) | wc
+FLOW  COMMAND:  
+./flow test1.flow shenanigan
+EXPECTED OUTPUT:  
+      2       4      28
+TEST-END
+
+TEST-2 
+TEST-BEGIN  
+COMMAND: ( cat foo.txt ) | wc
+FLOW  COMMAND:  
+./flow test2.flow cat_to_wc 
+EXPECTED OUTPUT:  
+      3       7      22
+TEST-END
+
+TEST-3
+TEST-BEGIN  
+COMMAND: ( echo "test" 2>&1 ) | wc
+FLOW  COMMAND:  
+./flow test3.flow error_pipe
+EXPECTED OUTPUT:  
+      1       1       5
+TEST-END
+
+TEST-4
+TEST-BEGIN  
+COMMAND: ( mkdir hello 2>&1 ) | wc
+FLOW  COMMAND:  
+./flow test4.flow catch_errors
+EXPECTED OUTPUT:  
+      1       7      52
+      0       0       0
+TEST-END
+
+TEST-5
+TEST-BEGIN  
+COMMAND: ( grep Hello hello.txt 2>&1 ) | wc
+FLOW  COMMAND:  
+./flow test5.flow grep_to_wc
+EXPECTED OUTPUT:  
+      1       2      14
+TEST-END

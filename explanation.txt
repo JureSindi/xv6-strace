@@ -1,0 +1,65 @@
+My team member and I have implemented flow.c
+The flow.c file includes the implementations of the required tasks alongside the implementations of the extra credits. 
+In this program, these are the following functions that are included: 
+void file(const char* filename);
+int nodeSearch (const char* name);
+int pipeSearch (const char* name);
+int concatSearch (const char* name);
+void nodeExecution (int nodeIndex, int input, int output, int error);
+void pipeExecution (int pipeIndex, int output);
+void concatExecution (int concatIndex, int output);
+
+The parts that we need to implement are node, pipe, and concatenate. I will be explaining the design and thought process behind the implementation one by one.
+
+For void file (const char* filename); this function implements the reading and parsing of a flow file that defines the nodes, pipes, and concatenations for a specific flow graph(s). This flow file would follow a custom format, with each line specifying different elements such as nodes, pipes, concatenations, file handling, and error redirections. This function reads the file line by line and it also populates the relevant data structures which are nodes[], pipes[], and concatenations[]. 
+
+For the node implementation: 
+The node in the implementation is designed to show a particular unit that executes a simple command.
+typedef struct {
+   char name[50]; // The unique identifier for the node
+   char command[commandLength]; // The command
+   char errorTo[50]; // For the stderr redirection, for where the standard error goes
+   char fileName[50]; // For handling the input or output files
+   int inputFile;
+   int outputFile;
+} Node;
+For int nodeSearch (const char* name); this function searches through the list of nodes to find the one with a specific name, then it returns the index of the node if found, -1 if no node with the given name exists.
+For void nodeExecution (int nodeIndex, int input, int output, int error); this function causes a new process using fork(), then redirects the standard input, output, and if needed error using dup2(). In this function, if inputFile is set, then the node reads from a file using open() and dup2(). The command is parsed into its arguments and is executed using execvp(), handling quoted arguments as required. And, the process waits for completion using waitpid() to make sure the appropriate synchronization.
+
+For the pipe implementation: 
+The pipe connects two nodes which allows the output of one node to be used as the input of another. 
+typedef struct {
+   char name[50]; // The unique identifier for the pipe
+   char from[50]; // The source node of the pipe
+   char to[50]; // The destination node of the pipe
+} Pipe;
+For int pipeSearch (const char* name); this function searches through the list of pipes to find one with a specific name, then it returns the index of the pipe if foundm -1 if no pipe with the given name exists.
+For void pipeExecution (int pipeIndex, int output); this function has a few steps, firstly creating a pipe using pipe(), the from node writes its output to the write-end of the pipe, and the to node reads from the read-end. And, the two ends of the pipe are connected to the standard input or output of the nodes using dup2().
+The function also includes the special case handling of the implementation for pipes such as "stdout_to_stderr_for_mkdir" which redirects stderr to be processed through a pipe using an additional pipe for error redirection. Also, similar to the special case handling of  ”read_pipe”.
+These are the implementations of the extra credits of the error handling (where the output of stderr could be processed similarly to stdout)  and file handling.
+
+For the concatenate implementation:
+The concatenate allows multiple nodes to run sequentially, combining their outputs. 
+typedef struct {
+   char name[50]; // The unique identifier for the concatenation
+   int partCount; // The number of parts which is the nodes involved in the concatentation
+   char parts[maxParts][50]; // The array of the names of the nodes that are involved
+} Concatenation;
+For int concatSearch (const char* name); this function searches through the list of concatenations to find one with a specific name, then it returns the index of the concatenation if found, -1 if no concatenation with the given name exists.
+For void concatExecution (int concatIndex, int output); this function iterates over each part; the node or pipe, in the concatenation. And, it calls nodeExecution() or pipeExecution() for each part sequentially, making sure that the outputs of each part are correctly passed to the next.
+
+For int main(int argc, char* argv[]); this function implements the entry point of the program; it processes the command-line arguments, loads the flow file, and initiates the execution of the specified pipe or flow.
+
+For the extra credits: 
+Extra credit 1: error handling: 
+This was implemented using the stderr attribute for nodes, allowing the redirection of the standard error to a specific node or pipe. This is practical for handling errors from commands such as mkdir that could fail. For instance, the flow “mkdir a 2>&1 | wc” is handled using pipes to redirect stderr to stdout, which allows it to be processed by the following commands. 
+
+Extra credit 2: file handling: 
+This was implemented using the file and name attribute. This allows a node to read from or write to a file. The nodes use open() to access the file, and dup2() to redirect the file descriptor to standard input or output (I/O). For instance, flows such as cat result.txt | wc are supported by allowing the nodes to open files as input or output.
+
+Challenges: 
+One of the challenges that I struggled with big time was the implementation of the stderr redirection. The difficulty here was making sure that stderr output could be redirected through a pipe while still allowing the stdout processing. The way I was able to fix and get over this challenge was by creating a second pipe for stderr and using dup2() to redirect stderr to this new pipe. 
+Another one, if I’m being honest both extra credits were a challenge, the file input or output was a challenge, especially when nodes needed to read from or write to files. The solution was using flags such as inputFile and outputFile to see if a node should open a file, and redirecting standard input or output as needed. 
+
+We then have test_cases.txt, in which we provided 5 test cases.
+Also, the way the code was run throughout the process of working on the homework was using: gcc -o flow flow.c

@@ -1,0 +1,9 @@
+node=invalid_command
+command=echo "test"
+
+node=word_count
+command=wc
+
+pipe=error_pipe
+from=invalid_command
+to=word_count

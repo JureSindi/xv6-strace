@@ -1,0 +1,9 @@
+node=search_txt
+command=grep Hello hello.txt
+
+node=word_count
+command=wc
+
+pipe=grep_to_wc
+from=search_txt
+to=word_count
