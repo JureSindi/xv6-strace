@@ -1,0 +1,21 @@
+node=cat_hello
+command=cat hello.txt
+
+node=to_upper
+command=tr '[:lower:]' '[:upper:]'
+
+pipe=hello_upper
+from=cat_hello
+to=to_upper
+
+concatenate=hello_both
+parts=2
+part_0=cat_hello
+part_1=hello_upper
+
+node=word_count
+command=wc
+
+pipe=shenanigan
+from=hello_both
+to=word_count

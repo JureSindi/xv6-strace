@@ -1,0 +1,9 @@
+node=cat_foo
+command=cat foo.txt
+
+node=word_count
+command=wc
+
+pipe=cat_to_wc
+from=cat_foo
+to=word_count
