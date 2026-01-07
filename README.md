@@ -1,3 +1,4 @@
+Linux-like strace system call tracer implemented inside the xv6 operating system kernel.
 Task 1:
 In this part of the homework, I implemented a nice system call that would adjust the priority of the processes based on the new 
 value. The nice.c program interacts with the newly implemented nice system call in xv6 to adjust the priority of processes. The 
