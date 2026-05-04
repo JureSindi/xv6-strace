@@ -54,7 +54,7 @@ To revert to standard round-robin, remove `-DSCHEDULER_PRIORITY` from `CFLAGS` a
  
 ## Part 3 - Priority Inversion & Inheritance (Extra Credit)
  
-Implemented priority inversion detection and resolution via priority inheritance — the same mechanism used to fix the Mars Pathfinder scheduler bug. When a high-priority process is blocked waiting on a lock held by a low-priority process, the low-priority process temporarily inherits the high-priority process's priority until the lock is released.
+Implemented priority inversion detection and resolution via priority inheritance, the same mechanism used to fix the Mars Pathfinder scheduler bug. When a high-priority process is blocked waiting on a lock held by a low-priority process, the low-priority process temporarily inherits the high-priority process's priority until the lock is released.
  
 **What was implemented:**
 - Lock ownership tracking in the kernel (which process holds which lock)
