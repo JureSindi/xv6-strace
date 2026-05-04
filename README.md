@@ -4,7 +4,7 @@ A set of original kernel-level extensions built directly into the xv6 operating 
  
 ## Why this matters
  
-Most OS coursework stops at reading kernel code. This project writes it — adding non-trivial scheduler policy and diagnostic infrastructure to a real (if small) Unix-like kernel. Priority inversion is a class of bug responsible for real-world failures (including the Mars Pathfinder mission); implementing its resolution via priority inheritance requires understanding lock ownership, scheduling queues, and process state at the kernel level. The strace tracer adds runtime visibility into syscall behavior, applied here to diagnose a real memory-leak program.
+Most OS coursework stops at reading kernel code. This project writes it, adding non-trivial scheduler policy and diagnostic infrastructure to a real (if small) Unix-like kernel. Priority inversion is a class of bug responsible for real-world failures (including the Mars Pathfinder mission); implementing its resolution via priority inheritance requires understanding lock ownership, scheduling queues, and process state at the kernel level. The strace tracer adds runtime visibility into syscall behavior, applied here to diagnose a real memory-leak program.
  
 ---
  
